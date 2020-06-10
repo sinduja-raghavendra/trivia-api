@@ -5,3 +5,30 @@
 #add-form {
   text-align: center;
 }
+
+input[type=text] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+.label{
+  font-weight: bold;
+  text-align: left;
+  float: left;
+  font-size: large;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 5px solid #888;
+  width: 20%;
+  height: 5px;
+}
