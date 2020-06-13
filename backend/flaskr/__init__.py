@@ -86,7 +86,7 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'deleted': question_id,
-        'books': current_questionss,
+        'questions': current_questionss,
         'total_books': len(selection)
       })
 
@@ -110,11 +110,10 @@ def create_app(test_config=None):
           'total_questions': len(selection)
       })
     else:
-      new_question = body.get('question', None)
-      new_answer = body.get('answer', None)
-      new_difficulty = body.get('difficulty', None)
-      new_category = body.get('category', None)
-
+      new_question = body.get('question') or None
+      new_answer = body.get('answer') or None
+      new_difficulty = body.get('difficulty') or None
+      new_category = body.get('category') or None
       if ((new_question is None) or (new_answer is None) or (new_difficulty is None) or (new_category is None)):
         abort(422)
       try:
@@ -234,6 +233,14 @@ def create_app(test_config=None):
           "error": 400,
           "message": "bad request"
       }), 400
+
+  @app.errorhandler(500)
+  def bad_request(error):
+      return jsonify({
+          "success": False, 
+          "error": 500,
+          "message": "Internal Server Error"
+      }), 500
 
   return app
 
