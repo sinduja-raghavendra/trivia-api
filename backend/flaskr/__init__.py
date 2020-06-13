@@ -7,6 +7,7 @@ from models import setup_db, Question, Category
 
 QUESTIONS_PER_PAGE = 10
 
+# Pagination Code
 def paginate_questions(request, selection):
   page = request.args.get('page', 1, type=int)
   start =  (page - 1) * QUESTIONS_PER_PAGE
@@ -30,6 +31,7 @@ def create_app(test_config=None):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
+  # Endpoint to handle GET requests for all available categories.
   @app.route('/categories')
   def retrieve_categories():
     categories = Category.query.order_by(Category.id).all()
@@ -46,6 +48,7 @@ def create_app(test_config=None):
       'categories': categories_dict
     })
 
+  # Endpoint to handle GET requests for all questions - Pagination Included
   @app.route('/questions')
   def get_questions():
     questions = Question.query.order_by(Question.id).all()
@@ -67,6 +70,7 @@ def create_app(test_config=None):
         'categories': categories_dict
       })
       
+  # Endpoint to DELETE a question using question ID.
   @app.route('/questions/<int:question_id>', methods=['DELETE'])
   def delete_question(question_id):
     try:
@@ -89,50 +93,56 @@ def create_app(test_config=None):
     except:
         abort(422)
 
+  # Endpoint to POST a new question, which will require the question and answer text, category, and difficulty score.
+  # Endpoint to get questions based on a search term. 
   @app.route('/questions', methods=['POST'])
   def add_questions():
     body = request.get_json()
-    new_question = body.get('question', None)
-    new_answer = body.get('answer', None)
-    new_difficulty = body.get('difficulty', None)
-    new_category = body.get('category', None)
-
-    try:
-      question = Question(question=new_question, answer=new_answer, difficulty=new_difficulty, category=new_category)
-      question.insert()
-
-      questions = Question.query.order_by(Question.id).all()
-      total_questions = len(questions)
-      current_questions = paginate_questions(request, questions)
-
-      categories = Category.query.all()
-      categories_dict = {}
-      for category in categories:
-          categories_dict[category.id] = category.type
-
-      if (len(current_questions) == 0):
-          abort(404)
-
+    if (body.get('searchTerm', None)):
+      search_term = body.get('searchTerm', None)
+      selection = Question.query.filter(Question.question.ilike(f'%{search_term}%')).all()
+      if (len(selection) == 0):
+        abort(404)
+      current_questions = paginate_questions(request, selection)
       return jsonify({
           'success': True,
           'questions': current_questions,
-          'total_questions': total_questions,
-          'categories': categories_dict
-        })
-    except:
+          'total_questions': len(selection)
+      })
+    else:
+      new_question = body.get('question', None)
+      new_answer = body.get('answer', None)
+      new_difficulty = body.get('difficulty', None)
+      new_category = body.get('category', None)
+
+      if ((new_question is None) or (new_answer is None) or (new_difficulty is None) or (new_category is None)):
         abort(422)
+      try:
+        question = Question(question=new_question, answer=new_answer, difficulty=new_difficulty, category=new_category)
+        question.insert()
 
-  '''
-  @TODO: 
-  Create a POST endpoint to get questions based on a search term. 
-  It should return any questions for whom the search term 
-  is a substring of the question. 
+        questions = Question.query.order_by(Question.id).all()
+        total_questions = len(questions)
+        current_questions = paginate_questions(request, questions)
 
-  TEST: Search by any phrase. The questions list will update to include 
-  only question that include that string within their question. 
-  Try using the word "title" to start. 
-  '''
+        categories = Category.query.all()
+        categories_dict = {}
+        for category in categories:
+            categories_dict[category.id] = category.type
 
+        if (len(current_questions) == 0):
+            abort(404)
+
+        return jsonify({
+            'success': True,
+            'questions': current_questions,
+            'total_questions': total_questions,
+            'categories': categories_dict
+          })
+      except:
+          abort(422)
+
+  # GET endpoint to get questions based on category. 
   @app.route('/categories/<int:category_id>/questions')
   def get_questions_based_on_category(category_id):
     category = Category.query.filter_by(id=category_id).one_or_none()
@@ -159,7 +169,7 @@ def create_app(test_config=None):
         'current_category': category.type
       })
 
-
+  # Endpoint to handle POST request to get all questions based on Category and pick one random question from the result to play the quiz.
   @app.route('/quizzes', methods=['POST'])
   def get_questions_for_quiz():
     body = request.get_json()
@@ -200,6 +210,7 @@ def create_app(test_config=None):
     except:
         abort(422)
 
+  # error handlers for all expected errors including 404 and 422. 
   @app.errorhandler(404)
   def not_found(error):
       return jsonify({
