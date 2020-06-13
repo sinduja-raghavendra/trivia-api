@@ -255,10 +255,11 @@ curl -X DELETE http://localhost:5000/questions/45
 ```
 
 ## Testing
-To run the tests, run
+To run the tests,
 ```
-dropdb trivia_test
-createdb trivia_test
-psql trivia_test < trivia.psql
-python test_flaskr.py
+1. Create "trivia_user" with the command "createuser trivia_user"
+2. Create a database with the command "createdb trivia_test"
+3. If database already exist run "dropdb trivia_test && createdb trivia_test" to drop the database and recreate it
+4. Run psql file with the command "psql trivia_test < trivia.psql"
+5. python test_flaskr.py
 ```

@@ -87,7 +87,7 @@ def create_app(test_config=None):
         'success': True,
         'deleted': question_id,
         'questions': current_questionss,
-        'total_books': len(selection)
+        'total_questions': len(selection)
       })
 
     except:
@@ -172,6 +172,7 @@ def create_app(test_config=None):
   @app.route('/quizzes', methods=['POST'])
   def get_questions_for_quiz():
     body = request.get_json()
+    print(body)
     category = body.get('quiz_category', None)
     previous = body.get('previous_questions')
     try:
