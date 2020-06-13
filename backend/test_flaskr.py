@@ -35,14 +35,10 @@ class TriviaTestCase(unittest.TestCase):
             'searchTerm': 'H2O?'
         }
 
-        self.search_term_that_does_not_exist = {
-            'searchTerm': 'H2O0928374?'
-        }
-
         self.quiz_input = {
             'previous_questions': [],
             'quiz_category': {
-                'type': 'Science', 
+                'type': 'Science',
                 'id': '1'
             }
         }
@@ -119,14 +115,6 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(data['success'], True)
         self.assertTrue(data['questions'])
         self.assertTrue(data['total_questions'])
-
-    def test_search_question_with_404_error(self):
-        res = self.client().post('/questions', json=self.search_term_that_does_not_exist)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'resource not found')
 
     def get_questions_based_on_category(self):
         res = self.client().get('/categories/1/questions')

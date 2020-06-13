@@ -51,14 +51,20 @@ export FLASK_ENV=development
 flask run
 ```
 
+Backend server will be running at 
+```
+http://localhost:5000
+```
+
 Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
 
 Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
 
 
 ## Endpoints
-
+```
 GET '/categories'
+```
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 
 Curl Syntax
@@ -81,8 +87,10 @@ curl http://localhost:5000/categories
   "success": true
 }
 ```
-
+**************
+```
 GET '/questions'
+```
 - Fetches a dictionary of categories and questions
 
 Curl Syntax
@@ -115,8 +123,10 @@ curl  http://localhost:5000/questions
   "total_questions": 58
 }
 ```
-
+**************
+```
 GET '/categories/<int:category_id>/questions'
+```
 - Fetches a dictionary of questions based on category
 
 Curl Syntax
@@ -146,8 +156,10 @@ curl  http://localhost:5000/categories/1/questions
       "question": "What is the heaviest organ in the human body?"
     }, ...
 ```
-
+**************
+```
 POST '/questions'
+```
 - When Search term is present in the request it fetches all the questions that contains the search term as a substring
 
 curl Syntax
@@ -171,8 +183,10 @@ curl -d '{"searchTerm":"Movie"}' -H "Content-Type: application/json" -X POST htt
   "total_questions": 1
 }
 ```
-
+**************
+```
 POST '/questions'
+```
 - When the Request has Question, Answer, Difficulty and Category parameters, It creates a new question record in the database 
 
 curl Syntax
@@ -204,8 +218,10 @@ curl -d '{"question": "What is H2O?", "answer": "Water", "difficulty": 1, "categ
   "total_questions": 58
 }
 ```
-
+**************
+```
 POST '/quizzes'
+```
 - Fetches all the questions from the database based on the category provided in the request, Picks a random question based on the previous question id that is provided in the request. 
 
 curl Syntax
@@ -226,8 +242,10 @@ curl -d '{"previous_questions": [37], "quiz_category": {"type": "Science", "id":
   "success": true
 }
 ```
-
+**************
+```
 DELETE '/questions/<int:question_id>'
+```
 - Deletes the question based on ID. 
 
 curl Syntax

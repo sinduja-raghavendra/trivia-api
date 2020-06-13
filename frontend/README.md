@@ -32,20 +32,42 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser. T
 npm start
 ```
 
-## Request Formatting
+## Udacitrivia
 
-The frontend should be fairly straightforward and disgestible. You'll primarily work within the ```components``` folder in order to edit the endpoints utilized by the components. While working on your backend request handling and response formatting, you can reference the frontend to view how it parses the responses. 
+Udacitrivia is a webpage to manage the trivia app and play the game
 
-After you complete your endpoints, ensure you return to and update the frontend to make request and handle responses appropriately: 
-- Correct endpoints
-- Update response body handling 
+## List 
 
-## Optional: Styling
+Trivia App Home page includes questions of 6 different category, 
+- We can view questions based on category. For each question Clicking on "Show Answer" will show the answer for the respective question, and you can hide the same by clicking on "Hide Answer"
+- Pagination is allowed and each page has 10 questions.
+- We can delete questions by clicking on the trash icon that is present in every question block
+- Users will be able to search for questions based on the search term provided in the "Search Box", 
+    - Partial search is enabled where user can look for a specific substring in the question
+    - Search is case-insensitive
 
-In addition, you may want to customize and style the frontend by editing the CSS in the ```stylesheets``` folder. 
+  <img src="media/UdacitriviaHomePage.png" />
+  <img src="media/ListSearch.png" />
 
-## Optional: Game Play Mechanics
+## Add
 
-Currently, when a user plays the game they play up to five questions of the chosen category. If there are fewer than five questions in a category, the game will end when there are no more questions in that category. 
+In this page user can add new questions, answers and associate the same with category and Difficulty level.
 
-You can optionally update this game play to increase the number of questions or whatever other game mechanics you decide. Make sure to specify the new mechanics of the game in the README of the repo you submit so the reviewers are aware that the behavior is correct. 
+Upon successful adding a new question, Success message will be displayed as shown in the image
+
+  <img src="media/addQuestionsPage.png"/>
+  <img src="media/successAddQuestions.png"/>
+
+## Play
+
+In this page, User can play a game picking the category
+
+  <img src="media/playCategory.png" />
+
+When a category is choosen, Questions related to those category will be picked randomly from database and displayed. Upon answering the questions, next random question of the same category will be picked and dispalyed
+
+  <img src="media/playRandom.png" />
+
+A total of 5 question will be picked and the score is calculated out of 5. The Game can be repeted by clicking on "Play Again?"
+
+  <img src="media/playScore.png" />

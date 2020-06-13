@@ -6,4 +6,6 @@ MANIFEST
 build/
 node_modules
 react/js
+env.sh
+run.sh
 *~
